@@ -69,13 +69,13 @@ mod.hook.register("script_pre_init", "choukanzu_script_pre_init", function()
             id      = "choukanzu_watch",
             name    = "watch",
             action  = function()
-                local index = #formation+1
-                formation[index] = {}
+                local new_formation = {}
                 for i = 1,watched do
                     local id = param_options[params:get("choukanzu_bird_" .. i)]
                     if id ~= "none" then
-                        formation[index][id] = params:get(id)
+                        new_formation[id] = params:get(id)
                     end
+                    table.insert(formation, new_formation)
                     params:set("choukanzu_fly", 1)
                 end
             end
