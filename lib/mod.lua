@@ -1,3 +1,7 @@
+-- choukanzu
+-- v 0.1
+-- @alanza
+
 local mod = require "core/mods"
 
 local tCONTROL  = 3
