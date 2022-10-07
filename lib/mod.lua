@@ -12,6 +12,10 @@ local exclude = {}
 mod.hook.register("script_pre_init", "choukanzu_script_pre_init", function()
     local script_init = init
     init = function()
+        param_options = {"none"}
+        exclude = {}
+        formation = {}
+        watched = 0
         for id, _ in pairs(params.lookup) do
             table.insert(exclude, id)
         end
@@ -36,12 +40,22 @@ mod.hook.register("script_pre_init", "choukanzu_script_pre_init", function()
             action  = function(val)
                 local steps = #formation
                 if steps <= 1 then return end
-                local prev = math.floor(util.linlin(0, 1, 1, steps, val))
-                local next = math.ceil(util.linlin(0, 1, 1, steps, val))
+                val = val * (#formation - 1)
+                local prev = 0
+                while prev + 1 <= val do
+                    prev = prev + 1
+                end
+                local next = #formation - 1
+                while next - 1 >= val do
+                    next = next - 1
+                end
                 for i = 1, watched do
                     local id = param_options[params:get("choukanzu_bird_" .. i)]
-                    if id ~= "none" and formation[prev][id] and formation[next][id] then
-                        local newval = util.linlin(prev, next, formation[prev][id], formation[next][id], val)
+                    local prevval = formation[prev+1][id]
+                    local nextval = formation[next+1][id]
+                    local fract = val % 1
+                    if id ~= "none" and prevval and nextval then
+                        local newval = (1 - fract) * prevval + fract * nextval
                         params:set(id, newval)
                     end
                 end
