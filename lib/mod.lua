@@ -93,9 +93,9 @@ mod.hook.register("script_pre_init", "choukanzu_script_pre_init", function()
                     if id ~= "none" then
                         new_formation[id] = params:get(id)
                     end
-                    table.insert(formation, new_formation)
-                    params:set("choukanzu_fly", 1)
                 end
+                table.insert(formation, new_formation)
+                params:set("choukanzu_fly", 1)
             end
         }
     end
